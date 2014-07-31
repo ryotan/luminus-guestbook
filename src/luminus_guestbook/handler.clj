@@ -2,6 +2,7 @@
   (:require [compojure.core :refer [defroutes]]
             [luminus-guestbook.routes.home :refer [home-routes]]
             [luminus-guestbook.middleware :as middleware]
+            [luminus-guestbook.db.schema :as schema]
             [noir.util.middleware :refer [app-handler]]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
@@ -32,6 +33,10 @@
     {:path "luminus_guestbook.log" :max-size (* 512 1024) :backlog 10})
 
   (if (env :dev) (parser/cache-off!))
+
+  ;; initialize the database if needed
+  (if-not (schema/initialized?) (schema/create-tables))
+
   (timbre/info "luminus-guestbook started successfully"))
 
 (defn destroy

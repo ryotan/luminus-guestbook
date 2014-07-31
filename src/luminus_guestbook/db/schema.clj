@@ -17,22 +17,20 @@
   []
   (.exists (new java.io.File (str (io/resource-path) db-store ".h2.db"))))
 
-(defn create-users-table
-  []
+(defn create-guestbook-table []
   (sql/db-do-commands
     db-spec
     (sql/create-table-ddl
-      :users
-      [:id "varchar(20) PRIMARY KEY"]
-      [:first_name "varchar(30)"]
-      [:last_name "varchar(30)"]
-      [:email "varchar(30)"]
-      [:admin :boolean]
-      [:last_login :time]
-      [:is_active :boolean]
-      [:pass "varchar(100)"])))
+      :guestbook
+      [:id "integer primary key auto_increment"]
+      [:timestamp :timestamp]
+      [:name "varchar(30)"]
+      [:message "varchar(200)"]))
+  (sql/db-do-prepared
+    db-spec
+    "create index timestamp_index on guestbook(timestamp)"))
 
 (defn create-tables
   "creates the database tables used by the application"
   []
-  (create-users-table))
+  (create-guestbook-table))

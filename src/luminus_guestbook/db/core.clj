@@ -5,7 +5,7 @@
 
 (defdb db schema/db-spec)
 
-(defentity users)
+(defentity guestbook)
 
 (defn create-user [user]
   (insert users
@@ -22,3 +22,14 @@
   (first (select users
                  (where {:id id})
                  (limit 1))))
+
+(defn save-message
+  [name message]
+  (insert guestbook
+          (values {:name name
+                   :messge message
+                   :timestamp (new java.util.Date)})))
+
+(defn get-messages
+  []
+  (select guestbook))

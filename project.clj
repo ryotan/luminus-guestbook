@@ -2,7 +2,7 @@
   luminus-guestbook
   "0.1.0-SNAPSHOT"
   :description
-  "FIXME: write description"
+  "my luminus first application."
   :ring
   {:handler luminus-guestbook.handler/app,
    :init luminus-guestbook.handler/init,
